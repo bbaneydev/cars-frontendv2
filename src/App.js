@@ -1,50 +1,38 @@
-import React, { Component } from "react"
-import logo from "./logo.svg"
+import React, { useState, useEffect } from "react"
+import Login from './components/Login'
+import Home from './components/Home'
 import "./App.css"
 
-class LambdaDemo extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { loading: false, msg: null }
+function App() {
+  const [user, setUser] = useState([])
+
+  useEffect(() => {
+    fetch('https://cars-backend-fi.herokuapp.com/auth')
+      .then(res => {
+        if (res.ok) {
+          res.json().then(user => setUser(user))
+        } else {
+
+        }
+      })
+  }, [])
+
+  function handleLogout() {
+    fetch(`https://cars-backend-fi.herokuapp.com/logout`, {
+      method: 'DELETE'
+    })
+      .then(res => {
+        if (res.ok) {
+          setUser('')
+        }
+      })
   }
 
-  handleClick = api => e => {
-    e.preventDefault()
-
-    this.setState({ loading: true })
-    fetch("/.netlify/functions/" + api)
-      .then(response => response.json())
-      .then(json => this.setState({ loading: false, msg: json.msg }))
-  }
-
-  render() {
-    const { loading, msg } = this.state
-
-    return (
-      <p>
-        <button onClick={this.handleClick("hello")}>{loading ? "Loading..." : "Call Lambda"}</button>
-        <button onClick={this.handleClick("async-dadjoke")}>{loading ? "Loading..." : "Call Async Lambda"}</button>
-        <br />
-        <span>{msg}</span>
-      </p>
-    )
-  }
-}
-
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <LambdaDemo />
-        </header>
-      </div>
-    )
-  }
+  if (!user) return <Login />
+  if (user) return <Home handleLogout={handleLogout} user={user} />
+  return (
+    <Login setUser={setUser} />
+  )
 }
 
 export default App
