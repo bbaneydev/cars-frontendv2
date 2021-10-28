@@ -6,7 +6,7 @@ import "./App.css"
 function App() {
   const [user, setUser] = useState([])
 
-  useEffect(() => {
+  function handleLogin() {
     fetch('https://cars-backend-fi.herokuapp.com/auth')
       .then(res => {
         if (res.ok) {
@@ -15,7 +15,7 @@ function App() {
 
         }
       })
-  }, [])
+  }
 
   function handleLogout() {
     fetch(`https://cars-backend-fi.herokuapp.com/logout`, {
@@ -28,10 +28,11 @@ function App() {
       })
   }
 
-  if (!user) return <Login />
+  if (!user) return <Login handleLogin={handleLogin} setUser={setUser}/> 
   if (user) return <Home handleLogout={handleLogout} user={user} />
   return (
     <Login setUser={setUser} />
+
   )
 }
 
