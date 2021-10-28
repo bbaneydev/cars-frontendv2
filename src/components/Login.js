@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 // import { Link } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 
-export default function Login({ setUser, handleLogin }) {
+export default function Login({ setCurrentUser}) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     // const [user, setUser] = useState()
@@ -24,8 +24,8 @@ export default function Login({ setUser, handleLogin }) {
                 if (res.ok) {
                     res.json().then(user => {
                         console.log(user)
-                        setUser(user)
-                        // history.push('/home')
+                        setCurrentUser(user)
+                        history.push('/home')
                     })
                 } else {
                     res.json().then(errors => {
@@ -42,7 +42,7 @@ export default function Login({ setUser, handleLogin }) {
                 <input placeholder='Username..' value={username} name="username" required onChange={(e) => setUsername(e.target.value)} />
                 <span>Password: </span>
                 <input placeholder='Password..' value={password} name="password" required onChange={(e) => setPassword(e.target.value)} />
-                <button type='submit'>Sign up!</button>
+                <button type='submit'>Login !</button>
             </form>
         </div>
     )
