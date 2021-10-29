@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom'
 // import './styles.css';
 ReactDOM.render(
-    <Router forceRefresh={true}>
+    <Router>
         <App />
     </Router>,
     document.getElementById('root'));

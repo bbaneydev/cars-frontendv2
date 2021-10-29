@@ -9,6 +9,7 @@ export default function Navbar({ currentUser }) {
         <Menu isOpen={false}>
             {currentUser ?
                 <nav>
+                    <h1>{currentUser.username}</h1>
                     <Link to='/home'><a className='menu-item' href='/home'>Home</a></Link>
                     <Link to='/profile'><a className='menu-item' href='/profile'>Your Cars</a></Link>
                     <Link to='/'><a className='menu-item' href='/login'>Log out</a></Link>

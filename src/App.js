@@ -6,6 +6,8 @@ import Home from './components/Home'
 import "./App.css"
 import Navbar from './components/Navbar'
 import Pagination from './components/Pagination'
+import Reviews from "./components/Reviews";
+import AddCar from './components/AddCar'
 function App() {
   const [user, setUser] = useState([])
   const [currentUser, setCurrentUser] = useState(null)
@@ -43,7 +45,7 @@ function App() {
   }
 
 
-  function handleLogin() {
+  useEffect(()=>{
     fetch('https://cars-backend-fi.herokuapp.com/auth')
       .then(res => {
         if (res.ok) {
@@ -52,7 +54,7 @@ function App() {
 
         }
       })
-  }
+},[])
 
   function handleLogout() {
     fetch(`https://cars-backend-fi.herokuapp.com/logout`, {
@@ -66,13 +68,24 @@ function App() {
       })
   }
 
+  function handleAdd(newCar){
+    const updatedCars = [...cars, newCar]
+    setCars(updatedCars)
+  }
+
 
   return (
     <div className="App">
       <Navbar currentUser={currentUser} />
       <Switch>
+      <Route path='/home/:id'>
+          <Reviews />
+        </Route>
+        <Route path='/addcar'>
+          <AddCar handleAdd={handleAdd}/>
+        </Route>
         <Route path='/login'>
-          <Login setCurrentUser={setCurrentUser} handleLogout={handleLogout} handleLogin={handleLogin} />
+          <Login setCurrentUser={setCurrentUser} handleLogout={handleLogout} />
         </Route>
         <Route exact path='/home'>
           <Home handleLogout={handleLogout} user={user} cars={currentPosts} handleSearchIcon={handleSearchIcon} searchIcon={searchIcon} />
